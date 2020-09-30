@@ -1,10 +1,24 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
-import LikeButton from "./likeButton";
+import LikeButton from "./common/likeButton";
+import Pagination from "./common/pagination";
+import {paginate} from "../utils/paginate";
+
+interface Movie {
+  _id: string;
+  title: string;
+  genre: {_id: string, name: string};
+  numberInStock: number;
+  dailyRentalRate: number;
+  publishDate: string
+  liked: boolean;
+}
 
 export default class Movies extends Component {
   state = {
     movies: getMovies(),
+    currentPage: 1,
+    pageSize: 4,
   };
 
   handleDelete = (movie: any) => {
@@ -15,20 +29,29 @@ export default class Movies extends Component {
   handleLike = (movie: any) => {
     const movies = [...this.state.movies];
     const index = movies.indexOf(movie);
-    movies[index] = {...movies[index]};
+    movies[index] = { ...movies[index] };
     movies[index].liked = !movies[index].liked;
     this.setState({ movies });
   };
 
+  handlePageChange = (page: any) => {
+    this.setState({ currentPage: page})
+  };
+
   render() {
-    const { length: moviesCount } = this.state.movies;
+    const { pageSize, currentPage, movies: allMovies } = this.state;
+    const { length: moviesCount } = allMovies;
 
     if (moviesCount === 0) {
       return <p>There are no movies in the database</p>;
     }
 
+    const movies = paginate(allMovies, currentPage, pageSize);
+
+
+
     return (
-      <div className="container">
+      <React.Fragment>
         <p>Showing {moviesCount} movies in the databse.</p>
         <table className="table">
           <thead>
@@ -41,7 +64,7 @@ export default class Movies extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.movies.map((movie) => (
+            {movies.map((movie: Movie) => (
               <tr key={movie._id}>
                 <th>{movie.title}</th>
                 <td>{movie.genre.name}</td>
@@ -65,7 +88,13 @@ export default class Movies extends Component {
             ))}
           </tbody>
         </table>
-      </div>
+        <Pagination
+          itemsCount={moviesCount}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={this.handlePageChange}
+        />
+      </React.Fragment>
     );
   }
 }
