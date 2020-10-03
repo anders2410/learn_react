@@ -2,44 +2,55 @@ import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import LikeButton from "./common/likeButton";
 import Pagination from "./common/pagination";
-import {paginate} from "../utils/paginate";
+import { paginate } from "../utils/paginate";
+import ListGroup from "./common/listGroup";
+import { getGenres } from "../services/fakeGenreService";
 
+// How to define types in TypeScript.
+// This is the type of a movie
 interface Movie {
   _id: string;
   title: string;
-  genre: {_id: string, name: string};
+  genre: { _id: string; name: string };
   numberInStock: number;
   dailyRentalRate: number;
-  publishDate: string
+  publishDate: string;
   liked: boolean;
 }
 
 export default class Movies extends Component {
   state = {
-    movies: getMovies(),
+    movies: [],
+    genres: [],
     currentPage: 1,
     pageSize: 4,
   };
 
-  handleDelete = (movie: any) => {
-    const movies = this.state.movies.filter((m) => m._id !== movie._id);
+  // This is where you would get backend calls/API calls
+  // to get information into your project.
+  componentDidMount() {
+    this.setState({ movies: getMovies(), genres: getGenres() });
+  }
+
+  handleDelete = (movie: Movie) => {
+    const movies: Movie[] = this.state.movies.filter((m: Movie) => m._id !== movie._id);
     this.setState({ movies });
   };
 
-  handleLike = (movie: any) => {
-    const movies = [...this.state.movies];
-    const index = movies.indexOf(movie);
+  handleLike = (movie: Movie) => {
+    const movies: Movie[] = [...this.state.movies];
+    const index: number = movies.indexOf(movie);
     movies[index] = { ...movies[index] };
     movies[index].liked = !movies[index].liked;
     this.setState({ movies });
   };
 
   handlePageChange = (page: any) => {
-    this.setState({ currentPage: page})
+    this.setState({ currentPage: page });
   };
 
   render() {
-    const { pageSize, currentPage, movies: allMovies } = this.state;
+    const { pageSize, currentPage, movies: allMovies, genres: allGenres } = this.state;
     const { length: moviesCount } = allMovies;
 
     if (moviesCount === 0) {
@@ -48,52 +59,60 @@ export default class Movies extends Component {
 
     const movies = paginate(allMovies, currentPage, pageSize);
 
-
-
     return (
       <React.Fragment>
-        <p>Showing {moviesCount} movies in the databse.</p>
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">Title</th>
-              <th scope="col">Genre</th>
-              <th scope="col">Stock</th>
-              <th scope="col">Rate</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {movies.map((movie: Movie) => (
-              <tr key={movie._id}>
-                <th>{movie.title}</th>
-                <td>{movie.genre.name}</td>
-                <td>{movie.numberInStock}</td>
-                <td>{movie.dailyRentalRate}</td>
-                <td>
-                  <LikeButton
-                    liked={movie.liked}
-                    onClick={() => this.handleLike(movie)}
-                  />
-                </td>
-                <td>
-                  <button
-                    onClick={() => this.handleDelete(movie)}
-                    className="btn btn-danger btn-sm"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <Pagination
-          itemsCount={moviesCount}
-          pageSize={pageSize}
-          currentPage={currentPage}
-          onPageChange={this.handlePageChange}
-        />
+        <div className="container">
+          <div className="row">
+            <div className="col-3">
+              <ListGroup items={allGenres} />
+            </div>
+
+            <div className="col-6">
+              <p>Showing {moviesCount} movies in the databse.</p>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Genre</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Rate</th>
+                    <th />
+                  </tr>
+                </thead>
+                <tbody>
+                  {movies.map((movie: Movie) => (
+                    <tr key={movie._id}>
+                      <th>{movie.title}</th>
+                      <td>{movie.genre.name}</td>
+                      <td>{movie.numberInStock}</td>
+                      <td>{movie.dailyRentalRate}</td>
+                      <td>
+                        <LikeButton
+                          liked={movie.liked}
+                          onClick={() => this.handleLike(movie)}
+                        />
+                      </td>
+                      <td>
+                        <button
+                          onClick={() => this.handleDelete(movie)}
+                          className="btn btn-danger btn-sm"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <Pagination
+                itemsCount={moviesCount}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                onPageChange={this.handlePageChange}
+              />
+            </div>
+          </div>
+        </div>
       </React.Fragment>
     );
   }
