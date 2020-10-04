@@ -18,12 +18,18 @@ interface Movie {
   liked: boolean;
 }
 
+export interface Genre {
+  _id: string;
+  name: string;
+}
+
 export default class Movies extends Component {
   state = {
     movies: [],
     genres: [],
     currentPage: 1,
     pageSize: 4,
+    selectedItem: { _id: "", name: "" }
   };
 
   // This is where you would get backend calls/API calls
@@ -33,7 +39,9 @@ export default class Movies extends Component {
   }
 
   handleDelete = (movie: Movie) => {
-    const movies: Movie[] = this.state.movies.filter((m: Movie) => m._id !== movie._id);
+    const movies: Movie[] = this.state.movies.filter(
+      (m: Movie) => m._id !== movie._id
+    );
     this.setState({ movies });
   };
 
@@ -49,8 +57,17 @@ export default class Movies extends Component {
     this.setState({ currentPage: page });
   };
 
+  handleGenreSelect = (genre: Genre) => {
+    this.setState({ selectedGenre: genre });
+  };
+
   render() {
-    const { pageSize, currentPage, movies: allMovies, genres: allGenres } = this.state;
+    const {
+      pageSize,
+      currentPage,
+      movies: allMovies,
+      genres: allGenres,
+    } = this.state;
     const { length: moviesCount } = allMovies;
 
     if (moviesCount === 0) {
@@ -64,7 +81,11 @@ export default class Movies extends Component {
         <div className="container">
           <div className="row">
             <div className="col-3">
-              <ListGroup items={allGenres} />
+              <ListGroup
+                items={allGenres}
+                selectedItem={this.state.selectedItem}
+                onItemSelect={this.handleGenreSelect}
+              />
             </div>
 
             <div className="col-6">
