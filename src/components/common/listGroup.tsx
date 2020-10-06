@@ -5,7 +5,7 @@ interface Props {
   items: any;
   textProperty: string;
   valueProperty: string;
-  selectedItem: Genre;
+  selectedGenre: Genre;
   onItemSelect(genre: Genre): void;
 }
 
@@ -14,12 +14,12 @@ const ListGroup = (props: Props) => {
     items,
     textProperty,
     valueProperty,
-    selectedItem,
+    selectedGenre,
     onItemSelect,
   } = props;
 
   function getClassName(genre: Genre) {
-    if (selectedItem === genre) {
+    if (selectedGenre.name === genre.name) {
       return "list-group-item list-group-item-action active";
     } else {
       return "list-group-item list-group-item-action";
@@ -33,7 +33,7 @@ const ListGroup = (props: Props) => {
           key={genre[valueProperty]}
           onClick={() => onItemSelect(genre)}
           type="button"
-          className={getClassName(genre.name)}
+          className={getClassName(genre)}
         >
           {genre[textProperty]}
         </button>

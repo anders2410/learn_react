@@ -7,7 +7,7 @@ import ListGroup from "./common/listGroup";
 import { getGenres } from "../services/fakeGenreService";
 
 // How to define types in TypeScript.
-// This is the type of a movie
+// This is the type of a movie.
 interface Movie {
   _id: string;
   title: string;
@@ -23,19 +23,28 @@ export interface Genre {
   name: string;
 }
 
+interface State {
+  movies: Movie[];
+  genres: Genre[];
+  currentPage: number;
+  pageSize: number;
+  selectedGenre: Genre;
+}
+
 export default class Movies extends Component {
-  state = {
+  state: State = {
     movies: [],
     genres: [],
     currentPage: 1,
     pageSize: 4,
-    selectedItem: { _id: "", name: "" }
+    selectedGenre: { _id: "", name: "All Genres" },
   };
 
   // This is where you would get backend calls/API calls
   // to get information into your project.
   componentDidMount() {
-    this.setState({ movies: getMovies(), genres: getGenres() });
+    const genres = [{ name: "All Genres"}, ...getGenres()];
+    this.setState({ movies: getMovies(), genres });
   }
 
   handleDelete = (movie: Movie) => {
@@ -58,13 +67,14 @@ export default class Movies extends Component {
   };
 
   handleGenreSelect = (genre: Genre) => {
-    this.setState({ selectedGenre: genre });
+    this.setState({ selectedGenre: genre, currentPage: 1 });
   };
 
   render() {
     const {
       pageSize,
       currentPage,
+      selectedGenre,
       movies: allMovies,
       genres: allGenres,
     } = this.state;
@@ -74,7 +84,8 @@ export default class Movies extends Component {
       return <p>There are no movies in the database</p>;
     }
 
-    const movies = paginate(allMovies, currentPage, pageSize);
+    const filtered = selectedGenre && selectedGenre._id ? allMovies.filter((m: Movie) => m.genre._id === selectedGenre._id) : allMovies;
+    const movies = paginate(filtered, currentPage, pageSize);
 
     return (
       <React.Fragment>
@@ -83,13 +94,13 @@ export default class Movies extends Component {
             <div className="col-3">
               <ListGroup
                 items={allGenres}
-                selectedItem={this.state.selectedItem}
+                selectedGenre={this.state.selectedGenre}
                 onItemSelect={this.handleGenreSelect}
               />
             </div>
 
             <div className="col-6">
-              <p>Showing {moviesCount} movies in the databse.</p>
+              <p>Showing {filtered.length} movies in the databse.</p>
               <table className="table">
                 <thead>
                   <tr>
@@ -126,7 +137,7 @@ export default class Movies extends Component {
                 </tbody>
               </table>
               <Pagination
-                itemsCount={moviesCount}
+                itemsCount={filtered.length}
                 pageSize={pageSize}
                 currentPage={currentPage}
                 onPageChange={this.handlePageChange}
