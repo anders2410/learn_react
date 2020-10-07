@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
-import LikeButton from "./common/likeButton";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import ListGroup from "./common/listGroup";
 import { getGenres } from "../services/fakeGenreService";
+import MoviesTable from "./moviesTable";
 
 // How to define types in TypeScript.
 // This is the type of a movie.
-interface Movie {
+export interface Movie {
   _id: string;
   title: string;
   genre: { _id: string; name: string };
@@ -43,8 +43,8 @@ export default class Movies extends Component {
   // This is where you would get backend calls/API calls
   // to get information into your project.
   componentDidMount() {
-    const genres = [{ name: "All Genres"}, ...getGenres()];
-    this.setState({ movies: getMovies(), genres });
+    const genres = [{ name: "All Genres" }, ...getGenres()];
+    this.setState({ _id: "", movies: getMovies(), genres });
   }
 
   handleDelete = (movie: Movie) => {
@@ -70,6 +70,10 @@ export default class Movies extends Component {
     this.setState({ selectedGenre: genre, currentPage: 1 });
   };
 
+  handleSort = (path: any) => {
+
+  };
+
   render() {
     const {
       pageSize,
@@ -84,7 +88,10 @@ export default class Movies extends Component {
       return <p>There are no movies in the database</p>;
     }
 
-    const filtered = selectedGenre && selectedGenre._id ? allMovies.filter((m: Movie) => m.genre._id === selectedGenre._id) : allMovies;
+    const filtered =
+      selectedGenre && selectedGenre._id
+        ? allMovies.filter((m: Movie) => m.genre._id === selectedGenre._id)
+        : allMovies;
     const movies = paginate(filtered, currentPage, pageSize);
 
     return (
@@ -101,41 +108,12 @@ export default class Movies extends Component {
 
             <div className="col-6">
               <p>Showing {filtered.length} movies in the databse.</p>
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col">Genre</th>
-                    <th scope="col">Stock</th>
-                    <th scope="col">Rate</th>
-                    <th />
-                  </tr>
-                </thead>
-                <tbody>
-                  {movies.map((movie: Movie) => (
-                    <tr key={movie._id}>
-                      <th>{movie.title}</th>
-                      <td>{movie.genre.name}</td>
-                      <td>{movie.numberInStock}</td>
-                      <td>{movie.dailyRentalRate}</td>
-                      <td>
-                        <LikeButton
-                          liked={movie.liked}
-                          onClick={() => this.handleLike(movie)}
-                        />
-                      </td>
-                      <td>
-                        <button
-                          onClick={() => this.handleDelete(movie)}
-                          className="btn btn-danger btn-sm"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <MoviesTable
+                movies={movies}
+                onLike={this.handleLike}
+                onDelete={this.handleDelete}
+                onSort={this.handleSort}
+              />
               <Pagination
                 itemsCount={filtered.length}
                 pageSize={pageSize}
