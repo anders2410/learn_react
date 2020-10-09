@@ -6,17 +6,17 @@ interface Props {
   textProperty: string;
   valueProperty: string;
   selectedGenre: Genre;
+
   onItemSelect(genre: Genre): void;
 }
 
-const ListGroup = (props: Props) => {
-  const {
-    items,
-    textProperty,
-    valueProperty,
-    selectedGenre,
-    onItemSelect,
-  } = props;
+const ListGroup = ({
+  items,
+  textProperty,
+  valueProperty,
+  selectedGenre,
+  onItemSelect,
+}: Props) => {
 
   function getClassName(genre: Genre) {
     if (selectedGenre.name === genre.name) {

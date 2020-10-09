@@ -3,6 +3,7 @@ import LikeButton from "./common/likeButton";
 import { Movie } from "./movies";
 import TableHeader from "./common/tableHeader";
 import TableBody from "./common/tableBody";
+import Table from "./common/table";
 
 interface Props {
   movies: Movie[];
@@ -58,14 +59,12 @@ export default class MoviesTable extends Component<Props> {
     const { movies, sortColumn, onSort } = this.props;
 
     return (
-      <table className="table">
-        <TableHeader
-          columns={this.columns}
-          sortColumn={sortColumn}
-          onSort={onSort}
-        />
-        <TableBody columns={this.columns} data={movies} />
-      </table>
+      <Table
+        columns={this.columns}
+        data={movies}
+        sortColumn={sortColumn}
+        onSort={onSort}
+      />
     );
   }
 }

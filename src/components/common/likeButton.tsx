@@ -5,9 +5,7 @@ interface Props {
   onClick: () => void;
 }
 
-const LikeButton = (props: Props) => {
-  const { liked, onClick } = props;
-
+const LikeButton = ({ liked, onClick }: Props) => {
   if (liked) {
     return (
       <i
