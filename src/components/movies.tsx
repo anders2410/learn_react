@@ -5,7 +5,6 @@ import { paginate } from "../utils/paginate";
 import ListGroup from "./common/listGroup";
 import { getGenres } from "../services/fakeGenreService";
 import MoviesTable, { SortColumn } from "./moviesTable";
-// @ts-ignore
 import _ from "lodash";
 
 // How to define types in TypeScript.
@@ -98,6 +97,7 @@ export default class Movies extends Component {
         ? allMovies.filter((m: Movie) => m.genre._id === selectedGenre._id)
         : allMovies;
 
+    // @ts-ignore
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
     const movies = paginate(sorted, currentPage, pageSize);
 
@@ -113,7 +113,7 @@ export default class Movies extends Component {
               />
             </div>
 
-            <div className="col-6">
+            <div className="col-8">
               <p>Showing {filtered.length} movies in the databse.</p>
               <MoviesTable
                 movies={movies}
