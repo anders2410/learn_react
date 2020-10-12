@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import LikeButton from "./common/likeButton";
 import { Movie } from "./movies";
-import TableHeader from "./common/tableHeader";
-import TableBody from "./common/tableBody";
 import Table from "./common/table";
 
 interface Props {
