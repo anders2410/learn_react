@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import LikeButton from "./common/likeButton";
 import { Movie } from "./movies";
 import Table from "./common/table";
+import { Link } from "react-router-dom";
 
 interface Props {
   movies: Movie[];
@@ -25,7 +26,11 @@ export interface Column {
 
 export default class MoviesTable extends Component<Props> {
   columns: Column[] = [
-    { path: "title", label: "Title" },
+    {
+      path: "title",
+      label: "Title",
+      content: (movie) => <Link to={`/movies/${movie._id}`}>{movie.title}</Link>,
+    },
     { path: "genre.name", label: "Genre" },
     { path: "numberInStock", label: "Stock" },
     { path: "dailyRentalRate", label: "Rate" },

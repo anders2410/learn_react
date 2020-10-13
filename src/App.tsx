@@ -6,6 +6,7 @@ import Customers from "./components/customers";
 import Rentals from "./components/rentals";
 import NotFound from "./components/common/not-found";
 import NavBar from "./components/common/nav-bar";
+import MovieForm from "./components/movie-form";
 
 /* The routing works as follows. The Switch component makes sure only one
  *  URL is matched. Then the Route renders the components associated with the
@@ -18,6 +19,7 @@ export default function App() {
       <NavBar />
       <main className="container">
         <Switch>
+          <Route path="/movies/:id" component={MovieForm} />
           <Route path="/movies" component={Movies} />
           <Route path="/customers" component={Customers} />
           <Route path="/rentals" component={Rentals} />
