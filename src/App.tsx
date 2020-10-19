@@ -11,7 +11,7 @@ import MovieForm from "./components/movie-form";
 /* The routing works as follows. The Switch component makes sure only one
  *  URL is matched. Then the Route renders the components associated with the
  *  URL-path. And then Redirect makes sure only legal URL's are used, and otherwise
- *  it send the user to a NotFound page.
+ *  it send/redirect the user to a NotFound page.
  * */
 export default function App() {
   return (

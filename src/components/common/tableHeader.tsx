@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Column, SortColumn } from "../moviesTable";
+import {Column, SortColumn} from "../../types/types";
 
 interface Props {
   columns: Column[];

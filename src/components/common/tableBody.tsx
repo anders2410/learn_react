@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import _ from "lodash";
-import { Column } from "../moviesTable";
+import {Column} from "../../types/types";
 
 interface Props {
   data: any[];

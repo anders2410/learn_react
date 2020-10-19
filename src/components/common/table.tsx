@@ -1,7 +1,7 @@
 import React from "react";
 import TableHeader from "./tableHeader";
 import TableBody from "./tableBody";
-import { Column, SortColumn } from "../moviesTable";
+import {Column, SortColumn} from "../../types/types";
 
 interface Props {
   sortColumn: SortColumn;

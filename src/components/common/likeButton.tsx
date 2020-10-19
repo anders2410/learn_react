@@ -5,6 +5,11 @@ interface Props {
   onClick: () => void;
 }
 
+/*
+* Returns a like button component.
+* Props: liked (is the movie already liked),
+*        onClick (callBack function to handle a like)
+* */
 const LikeButton = ({ liked, onClick }: Props) => {
   if (liked) {
     return (

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import LikeButton from "./common/likeButton";
-import { Movie } from "./movies";
 import Table from "./common/table";
 import { Link } from "react-router-dom";
+import { Column, Movie, SortColumn } from "../types/types";
 
 interface Props {
   movies: Movie[];
@@ -12,24 +12,14 @@ interface Props {
   onSort: (arg: SortColumn) => void;
 }
 
-export interface SortColumn {
-  path: string;
-  order: string;
-}
-
-export interface Column {
-  path: string;
-  key?: string;
-  label?: string;
-  content?: (arg: any) => void;
-}
-
 export default class MoviesTable extends Component<Props> {
   columns: Column[] = [
     {
       path: "title",
       label: "Title",
-      content: (movie) => <Link to={`/movies/${movie._id}`}>{movie.title}</Link>,
+      content: (movie) => (
+        <Link to={`/movies/${movie._id}`}>{movie.title}</Link>
+      ),
     },
     { path: "genre.name", label: "Genre" },
     { path: "numberInStock", label: "Stock" },

@@ -4,20 +4,9 @@ import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import ListGroup from "./common/listGroup";
 import { getGenres } from "../services/fakeGenreService";
-import MoviesTable, { SortColumn } from "./moviesTable";
+import MoviesTable from "./moviesTable";
 import _ from "lodash";
-
-// How to define types in TypeScript.
-// This is the type of a movie.
-export interface Movie {
-  _id: string;
-  title: string;
-  genre: { _id: string; name: string };
-  numberInStock: number;
-  dailyRentalRate: number;
-  publishDate: string;
-  liked: boolean;
-}
+import { Movie, SortColumn } from "../types/types";
 
 export interface Genre {
   _id: string;
