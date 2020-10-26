@@ -2,7 +2,7 @@ import * as React from "react";
 import { IErrors, IFormContext, FormContext, IValues } from "./form";
 
 /* The available editors for the field */
-type Editor = "textbox" | "multilinetextbox" | "dropdown";
+type Editor = "textbox" | "password" | "multilinetextbox" | "dropdown";
 
 export interface IValidation {
   rule: (values: IValues, fieldName: string, args: any) => string;
@@ -71,6 +71,20 @@ export const Field: React.FunctionComponent<IFieldProps> = ({
             />
           )}
 
+          {editor!.toLowerCase() === "password" && (
+            <input
+              id={id}
+              type="password"
+              value={value}
+              onChange={(e: React.FormEvent<HTMLInputElement>) =>
+                context.setValues({ [id]: e.currentTarget.value })
+              }
+              onBlur={() => context.validate(id)}
+              className="form-control"
+              style={getEditorStyle(context.errors)}
+            />
+          )}
+
           {editor!.toLowerCase() === "multilinetextbox" && (
             <textarea
               id={id}
@@ -114,6 +128,7 @@ export const Field: React.FunctionComponent<IFieldProps> = ({
     </FormContext.Consumer>
   );
 };
+
 Field.defaultProps = {
   editor: "textbox",
 };

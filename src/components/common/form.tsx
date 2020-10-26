@@ -1,6 +1,8 @@
 import * as React from "react";
 import { IFieldProps } from "./field";
 
+// https://www.carlrippon.com/building-react-form-component-typescript-basics/
+
 export interface IFields {
   [key: string]: IFieldProps;
 }
@@ -14,6 +16,9 @@ interface IFormProps {
 
   /* A prop which allows content to be injected */
   render: () => React.ReactNode;
+
+  /* The label of the submit-button (is "Submit" by default) */
+  submitLabel: string;
 }
 
 export interface IValues {
@@ -50,6 +55,11 @@ export interface IFormContext extends IFormState {
 export const FormContext = React.createContext<IFormContext>(undefined!);
 
 export class Form extends React.Component<IFormProps, IFormState> {
+  // Sets a default value for the specified props
+  static defaultProps = {
+    submitLabel: "Submit"
+  }
+
   constructor(props: IFormProps) {
     super(props);
 
@@ -160,14 +170,13 @@ export class Form extends React.Component<IFormProps, IFormState> {
         <form onSubmit={this.handleSubmit} noValidate={true}>
           <div className="container">
             {this.props.render()}
-
             <div className="form-group">
               <button
                 type="submit"
                 className="btn btn-primary"
                 disabled={this.haveErrors(errors)}
               >
-                Submit
+                {this.props.submitLabel}
               </button>
             </div>
             {submitSuccess && (
