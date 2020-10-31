@@ -7,6 +7,7 @@ import { getGenres } from "../services/fakeGenreService";
 import MoviesTable from "./moviesTable";
 import _ from "lodash";
 import { Movie, SortColumn } from "../types/types";
+import { NavLink, Link } from "react-router-dom";
 
 export interface Genre {
   _id: string;
@@ -108,8 +109,10 @@ export default class Movies extends Component {
                 onItemSelect={this.handleGenreSelect}
               />
             </div>
-
             <div className="col-8">
+              <Link className="btn btn-primary" to="/movies/new">
+                New Movie
+              </Link>
               <p>Showing {totalCount} movies in the databse.</p>
               <MoviesTable
                 movies={movies}

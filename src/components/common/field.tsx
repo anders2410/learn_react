@@ -2,7 +2,7 @@ import * as React from "react";
 import { IErrors, IFormContext, FormContext, IValues } from "./form";
 
 /* The available editors for the field */
-type Editor = "textbox" | "password" | "multilinetextbox" | "dropdown";
+type Editor = "textbox" | "multilinetextbox" | "dropdown";
 
 export interface IValidation {
   rule: (values: IValues, fieldName: string, args: any) => string;
@@ -22,6 +22,9 @@ export interface IFieldProps {
   /* The drop down items for the field */
   options?: string[];
 
+  /* The type of an input field (is "text" by default) */
+  type?: string;
+
   /* The field value */
   value?: any;
 
@@ -35,6 +38,7 @@ export const Field: React.FunctionComponent<IFieldProps> = ({
   editor,
   options,
   value,
+  type= "text"
 }) => {
   /**
    * Gets the validation error for the field
@@ -60,21 +64,7 @@ export const Field: React.FunctionComponent<IFieldProps> = ({
           {editor!.toLowerCase() === "textbox" && (
             <input
               id={id}
-              type="text"
-              value={value}
-              onChange={(e: React.FormEvent<HTMLInputElement>) =>
-                context.setValues({ [id]: e.currentTarget.value })
-              }
-              onBlur={() => context.validate(id)}
-              className="form-control"
-              style={getEditorStyle(context.errors)}
-            />
-          )}
-
-          {editor!.toLowerCase() === "password" && (
-            <input
-              id={id}
-              type="password"
+              type={type}
               value={value}
               onChange={(e: React.FormEvent<HTMLInputElement>) =>
                 context.setValues({ [id]: e.currentTarget.value })

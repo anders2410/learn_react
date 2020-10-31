@@ -6,7 +6,7 @@ import Customers from "./components/customers";
 import Rentals from "./components/rentals";
 import NotFound from "./components/common/not-found";
 import NavBar from "./components/common/nav-bar";
-import MovieForm from "./components/movie-form";
+import { MovieForm } from "./components/movie-form";
 import { ContactUsForm } from "./components/contact-us-form";
 import { Register } from "./components/register";
 
@@ -24,7 +24,7 @@ export default function App() {
           <Route path="/login" component={ContactUsForm} />
           <Route path="/register" component={Register} />
           <Route path="/contact-us" component={ContactUsForm} />
-          <Route path="/movies/:id" component={MovieForm} />
+          <Route path="/movies/new" component={MovieForm} />
           <Route path="/movies" component={Movies} />
           <Route path="/customers" component={Customers} />
           <Route path="/rentals" component={Rentals} />

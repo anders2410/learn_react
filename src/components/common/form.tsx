@@ -243,3 +243,25 @@ export const maxLength = (
   values[fieldName] && values[fieldName].length > length
     ? `This can not exceed ${length} characters`
     : "";
+
+/**
+ * Validates whether a field is a positive number
+ * @param {IValues} values - All the field values in the form
+ * @param {string} fieldName - The field to validate
+ * @returns {string} - The error message
+ */
+export const positiveNumber = (
+  values: IValues,
+  fieldName: string
+): string =>
+  values[fieldName].search(/^\d*$/)
+    ? `The number cannot be negative`
+    : "";
+
+export const numberBetweenOneAndTen = (
+  values: IValues,
+  fieldName: string
+): string =>
+  values[fieldName].search(/^([1-9]|10)$/)
+    ? `The number must be between 1 and 10`
+    : "";

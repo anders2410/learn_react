@@ -1,13 +1,21 @@
 import * as React from "react";
-import { Form, IFields, isEmail, maxLength, required } from "./common/form";
+import { Form, IFields, isEmail, required } from "./common/form";
 import { Field } from "./common/field";
-
 
 export const Register: React.FunctionComponent = () => {
   const fields: IFields = {
-    username: {id: "username", label: "Username", validation: {rule: isEmail}},
-    password: {id: "password", label: "Password", editor: "password", validation: {rule: required}},
-    name: {id: "name", label: "Name", validation: {rule: required}},
+    username: {
+      id: "username",
+      label: "Username",
+      validation: { rule: isEmail },
+    },
+    password: {
+      id: "password",
+      label: "Password",
+      type: "password",
+      validation: { rule: required },
+    },
+    name: { id: "name", label: "Name", validation: { rule: required } },
   };
 
   return (
@@ -24,4 +32,4 @@ export const Register: React.FunctionComponent = () => {
       )}
     />
   );
-}
+};
